@@ -75,8 +75,7 @@ class UserController {
         const connectionUser = getCustomRepository(UsersRepository)
         const user = await connectionUser.findOne({ email })
         if (user) {
-            const status = await connectionUser.remove(user)
-            console.log(status)
+            await connectionUser.delete(user.id)
             return resp.status(200).json({ message: 'User remove success!' })
         }
         else {
@@ -100,8 +99,7 @@ class UserController {
         const user = await connectionUser.findOne({ email })
         
         if (user) {
-            const status = await connectionUser.update(user.id, req.body)
-            console.log(status)
+            await connectionUser.update(user.id, req.body)
             return resp.status(200).json({ message: 'User update success' })
         }
 
