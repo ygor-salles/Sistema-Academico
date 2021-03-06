@@ -5,11 +5,12 @@ import * as yup from 'yup'
 
 class UserController {
     async create(req: Request, resp: Response) {
-        const { name, email } = req.body
+        const { name, email, password } = req.body
 
         const schema = yup.object().shape({
-            name: yup.string().required('Nome é obrigatório'),
-            email: yup.string().email().required('Email incorreto')
+            name: yup.string().required('Name is required'),
+            email: yup.string().email().required('Email incorrect'),
+            password: yup.string().required('Password is required')
         })
 
         try {
@@ -26,7 +27,7 @@ class UserController {
             return resp.status(404).json({ message: 'User already exists!' })
         }
 
-        const user = connectionUser.create({ name, email })
+        const user = connectionUser.create({ name, email, password })
         await connectionUser.save(user)
         return resp.status(201).json(user)
     }
