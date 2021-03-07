@@ -4,6 +4,10 @@ import { UsersRepository } from "../repositories/UsersRepository";
 import * as yup from 'yup'
 
 class UserController {
+    index(req: Request, resp: Response){
+        return resp.send({ userId: req.userId })
+    }
+
     async create(req: Request, resp: Response) {
         const { name, email, password } = req.body
 
