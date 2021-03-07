@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
+import * as yup from 'yup';
 import { UsersRepository } from "../repositories/UsersRepository";
-import * as yup from 'yup'
 
 class UserController {
     index(req: Request, resp: Response){
@@ -33,12 +33,14 @@ class UserController {
 
         const user = connectionUser.create({ name, email, password })
         await connectionUser.save(user)
+        delete user.password
         return resp.status(201).json(user)
     }
 
     async ready(req: Request, resp: Response) {
         const connectionUser = getCustomRepository(UsersRepository)
         const allUsers = await connectionUser.find()
+        allUsers.forEach(user => delete user.password)
         return resp.json(allUsers)
     }
 
@@ -46,7 +48,7 @@ class UserController {
         const { email } = req.body
 
         const schema = yup.object().shape({
-            email: yup.string().email('Email is required')
+            email: yup.string().email().required('Email incorrect')
         })
         try {
             await schema.validate(req.body, { abortEarly: false })
@@ -57,10 +59,11 @@ class UserController {
         const connectionUser = getCustomRepository(UsersRepository)
         const user = await connectionUser.findOne({ email })
         if (user) {
+            delete user.password
             return resp.json(user)
         }
         else {
-            return resp.status(404).json({ message: 'User already exists!' })
+            return resp.status(404).json({ message: 'User not found!' })
         }
 
     }
@@ -69,7 +72,7 @@ class UserController {
         const { email } = req.body
 
         const schema = yup.object().shape({
-            email: yup.string().email('Email is required')
+            email: yup.string().email().required('Email incorrect')
         })
         try {
             await schema.validate(req.body, { abortEarly: false })
@@ -81,10 +84,10 @@ class UserController {
         const user = await connectionUser.findOne({ email })
         if (user) {
             await connectionUser.delete(user.id)
-            return resp.status(200).json({ message: 'User remove success!' })
+            return resp.status(200).json({ message: 'User removed successfully!' })
         }
         else {
-            return resp.status(400).json({ message: 'User already exists!' })
+            return resp.status(404).json({ message: 'User not found!' })
         }
     }
 
@@ -92,7 +95,7 @@ class UserController {
         const { email } = req.body
 
         const schema = yup.object().shape({
-            email: yup.string().email('Email is required')
+            email: yup.string().email().required('Email is required')
         })
         try {
             await schema.validate(req.body, { abortEarly: false })
@@ -112,4 +115,4 @@ class UserController {
     }
 }
 
-export { UserController }
+export { UserController };
