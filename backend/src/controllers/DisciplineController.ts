@@ -39,13 +39,13 @@ class DisciplineController{
     }
 
     async readyByCode(req: Request, res: Response){
-        const { code } = req.params
+        const { code } = req.body
 
         const schema = yup.object().shape({
             code: yup.string().required('Code ir required')
         })
         try {
-            await schema.validate(req.params, { abortEarly: false })
+            await schema.validate(req.body, { abortEarly: false })
         } catch (error) {
             return res.status(400).json({ message: error })
         }
@@ -61,30 +61,30 @@ class DisciplineController{
     }
 
     async delete(req: Request, res: Response){
-        const { code } = req.params
+        const { code } = req.body
 
         const schema = yup.object().shape({
-            code: yup.string().required('Code is required')
+            code: yup.string().required('Email incorrect')
         })
         try {
-            await schema.validate(req.params, { abortEarly: false })
+            await schema.validate(req.body, { abortEarly: false })
         } catch (error) {
             return res.status(400).json({ message: error })
         }
 
         const connectionDiscipline = getCustomRepository(DisciplinesRepository)
         const discipline = await connectionDiscipline.findOne({ code })
-        if(discipline){
-            await connectionDiscipline.delete(discipline)
+        if (discipline) {
+            await connectionDiscipline.delete(discipline.id)
             return res.status(200).json({ message: 'Discipline removed successfully!' })
         }
-        else{
+        else {
             return res.status(404).json({ message: 'Discipline not found!' })
         }
     }
 
-    async update(req: Request, resp: Response){
-        const { code } = req.params
+    async update(req: Request, res: Response){
+        const { code } = req.body
 
         const schema = yup.object().shape({
             code: yup.string().required('code is required')
@@ -92,7 +92,7 @@ class DisciplineController{
         try {
             await schema.validate(req.body, { abortEarly: false })
         } catch (error) {
-            return resp.status(400).json({ message: error })
+            return res.status(400).json({ message: error })
         }
 
         const connectionDiscipline = getCustomRepository(DisciplinesRepository)
@@ -100,10 +100,10 @@ class DisciplineController{
         
         if (discipline) {
             await connectionDiscipline.update(discipline.id, req.body)
-            return resp.status(200).json({ message: 'Discipline update success' })
+            return res.status(200).json({ message: 'Discipline update success' })
         }
 
-        return resp.status(404).json({ message: 'Discipline not found' })
+        return res.status(404).json({ message: 'Discipline not found' })
     }
 }
 
