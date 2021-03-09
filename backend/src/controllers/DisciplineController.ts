@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import { json, Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import * as yup from 'yup';
 import { DisciplinesRepository } from "../repositories/DisciplinesRepository";
 
-class DisciplineController{
-    async create(req: Request, res: Response){
+class DisciplineController {
+    async create(req: Request, res: Response) {
         const { code, name, workload } = req.body
 
         const schema = yup.object().shape({
@@ -23,22 +23,32 @@ class DisciplineController{
 
         const disciplineAlreadyExists = await connectionDiscipline.findOne({ code })
 
-        if(disciplineAlreadyExists){
+        if (disciplineAlreadyExists && disciplineAlreadyExists.deleted_at !== null) {
+            await connectionDiscipline.update(disciplineAlreadyExists.id, { deleted_at: null })
+            return res.status(200).json({ message: 'Discipline successfully registered' })
+        }
+        else if (disciplineAlreadyExists) {
             return res.status(404).json({ message: 'Discipline already exists!' })
         }
+        else {
+            const discipline = connectionDiscipline.create({ code, name, workload })
+            await connectionDiscipline.save(discipline)
+            return res.status(201).json(discipline)
+        }
 
-        const discipline = connectionDiscipline.create({ code, name, workload })
-        await connectionDiscipline.save(discipline)
-        return res.status(201).json(discipline)
     }
 
-    async ready(req: Request, res: Response){
+    async ready(req: Request, res: Response) {
+        const disciplinesNotRemoved = []
         const connectionDiscipline = getCustomRepository(DisciplinesRepository)
         const allDisciplines = await connectionDiscipline.find()
-        return res.json(allDisciplines)
+        allDisciplines.forEach(disc => {
+            if (disc.deleted_at === null) disciplinesNotRemoved.push(disc)
+        })
+        return res.json(disciplinesNotRemoved)
     }
 
-    async readyByCode(req: Request, res: Response){
+    async readyByCode(req: Request, res: Response) {
         const { code } = req.body
 
         const schema = yup.object().shape({
@@ -51,16 +61,15 @@ class DisciplineController{
         }
 
         const connectionDiscipline = getCustomRepository(DisciplinesRepository)
-        const discipline =  await connectionDiscipline.findOne({ code })
-        if(discipline){
+        const discipline = await connectionDiscipline.findOne({ code })
+        if (discipline && discipline.deleted_at === null) {
             return res.json(discipline)
         }
-        else{
-            return res.status(404).json({ message: 'Discipline not found!' })
-        }
+
+        return res.status(404).json({ message: 'Discipline not found!' })
     }
 
-    async delete(req: Request, res: Response){
+    async delete(req: Request, res: Response) {
         const { code } = req.body
 
         const schema = yup.object().shape({
@@ -74,16 +83,15 @@ class DisciplineController{
 
         const connectionDiscipline = getCustomRepository(DisciplinesRepository)
         const discipline = await connectionDiscipline.findOne({ code })
-        if (discipline) {
-            await connectionDiscipline.delete(discipline.id)
+        if (discipline && discipline.deleted_at === null) {
+            await connectionDiscipline.update(discipline.id, { deleted_at: new Date() })
             return res.status(200).json({ message: 'Discipline removed successfully!' })
         }
-        else {
-            return res.status(404).json({ message: 'Discipline not found!' })
-        }
+
+        return res.status(404).json({ message: 'Discipline not found!' })
     }
 
-    async update(req: Request, res: Response){
+    async update(req: Request, res: Response) {
         const { code } = req.body
 
         const schema = yup.object().shape({
@@ -97,8 +105,8 @@ class DisciplineController{
 
         const connectionDiscipline = getCustomRepository(DisciplinesRepository)
         const discipline = await connectionDiscipline.findOne({ code })
-        
-        if (discipline) {
+
+        if (discipline && discipline.deleted_at===null) {
             await connectionDiscipline.update(discipline.id, req.body)
             return res.status(200).json({ message: 'Discipline update success' })
         }

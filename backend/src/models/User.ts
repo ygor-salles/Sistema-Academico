@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, BeforeInsert, BeforeUpdate } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryColumn, BeforeInsert, BeforeUpdate, DeleteDateColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid'
 import bcrypt from 'bcryptjs'
 
@@ -25,6 +25,9 @@ class User {
 
     @CreateDateColumn()
     created_at: Date
+
+    @Column()
+    deleted_at: Date
 
     constructor(){
         if(!this.id){

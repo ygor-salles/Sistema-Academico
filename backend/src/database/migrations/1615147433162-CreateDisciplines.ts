@@ -26,9 +26,9 @@ export class CreateDisciplines1615147433162 implements MigrationInterface {
                         type: 'integer'
                     },
                     {
-                        name: 'created_at',
+                        name: 'deleted_at',
                         type: 'timestamp',
-                        default: 'now()'
+                        isNullable: true
                     }
                 ]
             })
