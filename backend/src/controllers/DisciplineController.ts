@@ -48,20 +48,10 @@ class DisciplineController {
         return res.json(disciplinesNotRemoved)
     }
 
-    async readyByCode(req: Request, res: Response) {
-        const { code } = req.body
-
-        const schema = yup.object().shape({
-            code: yup.string().required('Code ir required')
-        })
-        try {
-            await schema.validate(req.body, { abortEarly: false })
-        } catch (error) {
-            return res.status(400).json({ message: error })
-        }
-
+    async readyById(req: Request, res: Response) {
+        const { id } = req.params
         const connectionDiscipline = getCustomRepository(DisciplinesRepository)
-        const discipline = await connectionDiscipline.findOne({ code })
+        const discipline = await connectionDiscipline.findOne({ id })
         if (discipline && discipline.deleted_at === null) {
             return res.json(discipline)
         }
@@ -70,19 +60,10 @@ class DisciplineController {
     }
 
     async delete(req: Request, res: Response) {
-        const { code } = req.body
-
-        const schema = yup.object().shape({
-            code: yup.string().required('Email incorrect')
-        })
-        try {
-            await schema.validate(req.body, { abortEarly: false })
-        } catch (error) {
-            return res.status(400).json({ message: error })
-        }
+        const { id } = req.params
 
         const connectionDiscipline = getCustomRepository(DisciplinesRepository)
-        const discipline = await connectionDiscipline.findOne({ code })
+        const discipline = await connectionDiscipline.findOne({ id })
         if (discipline && discipline.deleted_at === null) {
             await connectionDiscipline.update(discipline.id, { deleted_at: new Date() })
             return res.status(200).json({ message: 'Discipline removed successfully!' })
@@ -92,10 +73,12 @@ class DisciplineController {
     }
 
     async update(req: Request, res: Response) {
-        const { code } = req.body
+        const { id } = req.params
 
         const schema = yup.object().shape({
-            code: yup.string().required('code is required')
+            code: yup.string().required('Code is required'),
+            name: yup.string().required('Name is required'),
+            workload: yup.number().required('Workload is required')
         })
         try {
             await schema.validate(req.body, { abortEarly: false })
@@ -104,7 +87,7 @@ class DisciplineController {
         }
 
         const connectionDiscipline = getCustomRepository(DisciplinesRepository)
-        const discipline = await connectionDiscipline.findOne({ code })
+        const discipline = await connectionDiscipline.findOne({ id })
 
         if (discipline && discipline.deleted_at===null) {
             await connectionDiscipline.update(discipline.id, req.body)

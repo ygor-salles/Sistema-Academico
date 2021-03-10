@@ -34,20 +34,10 @@ class CourseController{
         return resp.json(courses)
     }
 
-    async readyByName(req: Request, resp: Response){
-        const { name } = req.body
-
-        const schema = yup.object().shape({
-            name: yup.string().required('Name is required')
-        })
-        try {
-            await schema.validate(req.body, { abortEarly: false })
-        } catch (error) {
-            return resp.status(400).json({ message: error })
-        }
-
+    async readyById(req: Request, resp: Response){
+        const { id }  = req.params
         const connectionCourse = getCustomRepository(CoursesRepository)
-        const course = connectionCourse.findOne({ name })
+        const course = await connectionCourse.findOne({ id })
         if(course){
             return resp.json(course)
         }
@@ -55,19 +45,10 @@ class CourseController{
     }
 
     async delete(req: Request, resp: Response){
-        const { name } = req.body
-
-        const schema = yup.object().shape({
-            name: yup.string().required('Name is required!')
-        })
-        try {
-            await schema.validate(req.body, { abortEarly: false })
-        } catch (error) {
-            return resp.status(400).json({ message: error })
-        }
+        const { id } = req.params
 
         const connectionCourse = getCustomRepository(CoursesRepository)
-        const course = await connectionCourse.findOne({ name })
+        const course = await connectionCourse.findOne({ id })
         if(course){
             await connectionCourse.delete(course.id)
             return resp.status(400).json({ message: 'Course removed successfully!' })
@@ -76,8 +57,8 @@ class CourseController{
     }
 
     async update(req: Request, res: Response) {
-        const { name } = req.body
-
+        const { id } = req.params
+      
         const schema = yup.object().shape({
             name: yup.string().required('Name is required')
         })
@@ -88,8 +69,8 @@ class CourseController{
         }
 
         const connectionCourse = getCustomRepository(CoursesRepository)
-        const course = await connectionCourse.findOne({ name })
-
+        const course = await connectionCourse.findOne({ id })
+        
         if (course) {
             await connectionCourse.update(course.id, req.body)
             return res.status(200).json({ message: 'Course update success' })

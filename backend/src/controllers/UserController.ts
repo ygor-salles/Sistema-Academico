@@ -57,20 +57,11 @@ class UserController {
         return resp.json(usersNotRemoved)
     }
 
-    async readyByEmail(req: Request, resp: Response) {
-        const { email } = req.body
-
-        const schema = yup.object().shape({
-            email: yup.string().email().required('Email incorrect')
-        })
-        try {
-            await schema.validate(req.body, { abortEarly: false })
-        } catch (error) {
-            return resp.status(400).json({ message: error })
-        }
+    async readyById(req: Request, resp: Response) {
+        const { id } = req.params
 
         const connectionUser = getCustomRepository(UsersRepository)
-        const user = await connectionUser.findOne({ email })
+        const user = await connectionUser.findOne({ id })
         if (user) {
             delete user.password
             if (user.deleted_at !== null) return resp.status(400).json({ message: 'User not found' })
@@ -81,19 +72,10 @@ class UserController {
     }
 
     async delete(req: Request, resp: Response) {
-        const { email } = req.body
-
-        const schema = yup.object().shape({
-            email: yup.string().email().required('Email incorrect')
-        })
-        try {
-            await schema.validate(req.body, { abortEarly: false })
-        } catch (error) {
-            return resp.status(400).json({ message: error })
-        }
+        const { id } = req.params
 
         const connectionUser = getCustomRepository(UsersRepository)
-        const user = await connectionUser.findOne({ email })
+        const user = await connectionUser.findOne({ id })
         if (user && user.deleted_at === null) {
             await connectionUser.update(user.id, { deleted_at: new Date() })
             return resp.status(200).json({ message: 'User removed successfully!' })
@@ -103,10 +85,14 @@ class UserController {
     }
 
     async update(req: Request, resp: Response) {
-        const { email } = req.body
+        const { id } = req.params
+        const { password, confirm_password } = req.body
 
         const schema = yup.object().shape({
-            email: yup.string().email().required('Email is required')
+            name: yup.string().required('Name is required'),
+            email: yup.string().email().required('Email incorrect'),
+            password: yup.string().required('Password is required'),
+            confirm_password: yup.string().required('Confirm password is required') 
         })
         try {
             await schema.validate(req.body, { abortEarly: false })
@@ -114,8 +100,12 @@ class UserController {
             return resp.status(400).json({ message: error })
         }
 
+        if (password !== confirm_password) {
+            return resp.status(400).json({ message: 'Passwords do not match' })
+        }
+
         const connectionUser = getCustomRepository(UsersRepository)
-        const user = await connectionUser.findOne({ email })
+        const user = await connectionUser.findOne({ id })
 
         if (user && user.deleted_at === null) {
             await connectionUser.update(user.id, req.body)
