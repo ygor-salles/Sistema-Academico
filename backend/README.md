@@ -28,8 +28,6 @@ yarn typeorm migration:run
 
 * Desfazer alterações da migration
 
-* Atualizar uma migration
-
 ```bash
 yarn typeorm migration:revert
 ```

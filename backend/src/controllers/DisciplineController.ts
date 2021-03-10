@@ -1,4 +1,4 @@
-import { json, Request, Response } from "express";
+import { Request, Response } from "express";
 import { getCustomRepository } from "typeorm";
 import * as yup from 'yup';
 import { DisciplinesRepository } from "../repositories/DisciplinesRepository";
@@ -116,3 +116,4 @@ class DisciplineController {
 }
 
 export { DisciplineController };
+
