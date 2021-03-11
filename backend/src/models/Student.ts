@@ -1,20 +1,28 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
 import { Course } from "./Course";
 
 @Entity('students')
 class Student {
     @PrimaryColumn()
-    readonly id: string
+    readonly id: string;
 
     @Column({ unique: true })
-    matriculation: string
+    matriculation: string;
 
     @Column()
-    name: string
+    name: string;
 
+    @Column()
+    course_id: string;
+
+    @CreateDateColumn()
+    created_at: Date;
+
+    // @ManyToOne(type => Course, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
     @ManyToOne(() => Course, course => course.students)
-    course: Course
+    @JoinColumn({ name: 'course_id' })
+    course: Course;
 
     constructor(){
         if(!this.id){

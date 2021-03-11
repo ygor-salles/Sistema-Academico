@@ -13,7 +13,7 @@ class UserController {
 
         const schema = yup.object().shape({
             name: yup.string().required('Name is required'),
-            email: yup.string().email().required('Email incorrect'),
+            email: yup.string().email('Email incorrect').required('Email is required'),
             password: yup.string().required('Password is required'),
             confirm_password: yup.string().required('Confirm password is required')
         })
