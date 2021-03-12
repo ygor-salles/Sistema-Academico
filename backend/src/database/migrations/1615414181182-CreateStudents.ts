@@ -28,7 +28,8 @@ export class CreateStudents1615414181182 implements MigrationInterface {
                     },
                     {
                         name: 'course_id',
-                        type: 'uuid'
+                        type: 'uuid',
+                        isNullable: true
                     }
                 ],
                 foreignKeys: [

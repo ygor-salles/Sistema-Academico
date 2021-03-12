@@ -13,14 +13,14 @@ class Student {
     @Column()
     name: string;
 
-    @Column()
+    @Column({ nullable: true})
     course_id: string;
 
     @CreateDateColumn()
     created_at: Date;
 
     // @ManyToOne(type => Course, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-    @ManyToOne(() => Course)
+    @ManyToOne(() => Course, { onUpdate: 'CASCADE', onDelete: 'SET NULL' })
     @JoinColumn({ name: 'course_id' })
     course: Course;
 

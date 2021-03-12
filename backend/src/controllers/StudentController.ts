@@ -22,13 +22,11 @@ class StudentController{
 
         const connectionStudent = getCustomRepository(StudentsRepository)
         const studentAlreadyExists = await connectionStudent.findOne({ matriculation })
-        console.log(studentAlreadyExists)
         if(studentAlreadyExists){
             return resp.status(400).json({ message: 'Student already exists!' })
         }
 
         const student = connectionStudent.create({ matriculation, name, course })
-        console.log(student)
         await connectionStudent.save(student)
         return resp.status(201).json(student)
     }
@@ -36,7 +34,6 @@ class StudentController{
     async ready(req: Request, resp: Response){
         const connectionStudent = getCustomRepository(StudentsRepository)
         const allStudents = await connectionStudent.find()
-        // allStudents.forEach(student => console.log(student.course))
         return resp.json(allStudents) 
     }
 
@@ -69,9 +66,7 @@ class StudentController{
         const schema = yup.object().shape({
             matriculation: yup.string().required('Matriculation is required'),
             name: yup.string().required('Name is required'),
-            course: yup.object().shape({
-                name: yup.string().required('Name is required')
-            })
+            course_id: yup.string().required('Course id is required')
         })
         try {
             await schema.validate(req.body, { abortEarly: false })
