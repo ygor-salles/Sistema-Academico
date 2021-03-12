@@ -20,7 +20,7 @@ class Student {
     created_at: Date;
 
     // @ManyToOne(type => Course, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-    @ManyToOne(() => Course, course => course.students)
+    @ManyToOne(() => Course)
     @JoinColumn({ name: 'course_id' })
     course: Course;
 

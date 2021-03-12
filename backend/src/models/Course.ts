@@ -13,7 +13,7 @@ class Course{
     @CreateDateColumn()
     created_at: Date
 
-    @OneToMany(() => Student, student => student.course)
+    @OneToMany(() => Student, student => student.course, { eager: true })
     students: Student[]
 
     constructor(){
