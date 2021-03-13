@@ -11,7 +11,9 @@ class StudentController{
             matriculation: yup.string().required('Matriculation is required'),
             name: yup.string().required('Name is required'),
             course: yup.object().shape({
-                name: yup.string().required('Name is required')
+                id: yup.string().uuid('Must be a valid course id').required('Course id is required'),
+                name: yup.string().required('Course name is required'),
+                created_at: yup.date().required('Course date is required')
             })
         })
         try {
@@ -66,7 +68,7 @@ class StudentController{
         const schema = yup.object().shape({
             matriculation: yup.string().required('Matriculation is required'),
             name: yup.string().required('Name is required'),
-            course_id: yup.string().required('Course id is required')
+            course_id: yup.string().uuid('Must be a valid course id').required('Course id is required')
         })
         try {
             await schema.validate(req.body, { abortEarly: false })

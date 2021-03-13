@@ -19,7 +19,6 @@ class Student {
     @CreateDateColumn()
     created_at: Date;
 
-    // @ManyToOne(type => Course, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
     @ManyToOne(() => Course, { onUpdate: 'CASCADE', onDelete: 'SET NULL' })
     @JoinColumn({ name: 'course_id' })
     course: Course;
