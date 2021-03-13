@@ -17,6 +17,10 @@ export class CreateGrid1615589607425 implements MigrationInterface {
                         type: 'number',
                     },
                     {
+                        name: 'course_name',
+                        type: 'varchar'
+                    },
+                    {
                         name: 'created_at',
                         type: 'timestamp',
                         default: 'now()'

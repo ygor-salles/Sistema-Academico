@@ -27,7 +27,7 @@ class GridController{
             return res.status(400).json({ message: 'Grid already exists!' })
         }
 
-        const grid = connectionGrid.create({ course_id: course.id, year })
+        const grid = connectionGrid.create({ course_id: course.id, year, course_name: course.name })
         console.log(grid)
         await connectionGrid.save(grid)
         return res.status(201).json(grid)
@@ -67,7 +67,8 @@ class GridController{
 
         const schema = yup.object().shape({
             year: yup.number().required('Year ir required'),
-            course_id: yup.string().uuid('Must be a valid course id').required('Course id is required')
+            course_id: yup.string().uuid('Must be a valid course id').required('Course id is required'),
+            course_name: yup.string().required('Course name is required')
         })
         try {
             await schema.validate(req.body, { abortEarly: false })

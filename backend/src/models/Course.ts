@@ -8,7 +8,7 @@ class Course{
     @PrimaryColumn()
     readonly id: string
 
-    @Column({ unique: true })
+    @Column()
     name: string
 
     @CreateDateColumn()

@@ -9,6 +9,9 @@ class Grid{
     @Column()
     year: number
 
+    @Column()
+    course_name: string
+
     @CreateDateColumn()
     created_at: Date
 

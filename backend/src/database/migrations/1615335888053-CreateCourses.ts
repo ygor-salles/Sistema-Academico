@@ -14,8 +14,7 @@ export class CreateCourses1615335888053 implements MigrationInterface {
                     },
                     {
                         name: 'name',
-                        type: 'varchar',
-                        isUnique: true
+                        type: 'varchar'
                     },
                     {
                         name: 'created_at',
