@@ -1,5 +1,7 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryColumn } from "typeorm";
 import { Course } from "./Course";
+import { Discipline } from "./Discipline";
+import { GridDiscipline } from "./GridDiscipline";
 
 @Entity('grids')
 class Grid{
@@ -18,6 +20,10 @@ class Grid{
     @OneToOne(() => Course, { onUpdate: 'CASCADE', onDelete: 'CASCADE' })
     @JoinColumn({ name: 'course_id' })
     course: Course
+
+    @OneToMany(() => GridDiscipline, disciplines => disciplines.grid, { eager: true })
+    disciplines: GridDiscipline[]
+
 }
 
 export { Grid }

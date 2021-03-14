@@ -10,7 +10,7 @@ class AuthController {
         const { email, password } = req.body
 
         const schema = yup.object().shape({
-            email: yup.string().email().required('Email incorrect'),
+            email: yup.string().email('E-mail incorrect').required('E-mail is required'),
             password: yup.string().required('Password is required')
         })
 

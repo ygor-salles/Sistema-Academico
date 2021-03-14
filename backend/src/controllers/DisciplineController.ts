@@ -10,7 +10,7 @@ class DisciplineController {
         const schema = yup.object().shape({
             code: yup.string().required('Code is required'),
             name: yup.string().required('Name is required'),
-            workload: yup.number().positive().integer().required('Workload is required')
+            workload: yup.number().positive('Positive number required').integer('Required whole number').required('Workload is required')
         })
 
         try {
