@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import * as yup from 'yup';
+import { Discipline } from '../models/Discipline';
 import { GridsRepository } from '../repositories/GridsRepository';
 
 class GridController{
@@ -43,7 +44,25 @@ class GridController{
     async ready(req: Request, res: Response){
         const connectionGrid = getCustomRepository(GridsRepository)
         const allGrids = await connectionGrid.find()
-        return res.json(allGrids)
+        const gridsDiscsNotRemoved = []
+        let newGrid: any
+        let disciplinesNotRemoved: Discipline[]
+        
+        // para retornar as disciplinas que não sofreram softDelete das grades
+        allGrids.forEach(grid => {
+            disciplinesNotRemoved = grid.disciplines.filter(
+                (disc: Discipline) => disc.deleted_at === null
+            )
+            newGrid = {
+                course_id: grid.course_id,
+                year: grid.year,
+                course_name: grid.course_name,
+                created_at: grid.created_at,
+                disciplines: disciplinesNotRemoved
+            }
+            gridsDiscsNotRemoved.push(newGrid)
+        })
+        return res.json(gridsDiscsNotRemoved)
     }
 
     async readyByCourseId(req: Request, res: Response){
@@ -51,9 +70,25 @@ class GridController{
 
         const connectionGrid = getCustomRepository(GridsRepository)
         const grid = await connectionGrid.findOne({ course_id })
+        
         if(grid){
-            return res.json(grid)
+            // para retornar disciplinas que não sofreram softDelete da grade
+            let newGrid: any
+            const disciplinesNotRemoved = []
+            grid.disciplines.forEach(disc => {
+                if(disc.deleted_at === null) disciplinesNotRemoved.push(disc)  
+            })
+            newGrid = {
+                course_id: grid.course_id,
+                year: grid.year,
+                course_name: grid.course_name,
+                created_at: grid.created_at,
+                disciplines: disciplinesNotRemoved
+            }
+
+            return res.json(newGrid)
         }
+
         return res.status(404).json({ message: 'Grid not found!' })
     }
 
