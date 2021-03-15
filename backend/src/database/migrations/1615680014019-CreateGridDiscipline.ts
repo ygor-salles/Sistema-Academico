@@ -16,11 +16,6 @@ export class CreateGridDiscipline1615680014019 implements MigrationInterface {
                         name: 'discipline_id',
                         type: 'uuid',
                         isPrimary: true
-                    },
-                    {
-                        name: 'created_at',
-                        type: 'timestamp',
-                        default: 'now()'
                     }
                 ],
                 foreignKeys: [

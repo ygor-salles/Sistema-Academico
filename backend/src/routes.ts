@@ -49,3 +49,4 @@ router.delete('/grids/:course_id', gridController.delete)
 router.put('/grids/:course_id', gridController.update)
 
 export { router }
+

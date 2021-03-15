@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import * as yup from 'yup';
-import { GridDisciplineRepository } from '../repositories/GridDisciplineRepository';
 import { GridsRepository } from '../repositories/GridsRepository';
 
 class GridController{
@@ -15,15 +14,13 @@ class GridController{
                 name: yup.string().required('Course name is required'),
                 created_at: yup.date().required('Course date is required')
             }),
-            disciplines: yup.array().of(
-                yup.object().shape({
-                    id: yup.string().uuid('Must be a valid discipline id').required('Discipline id is required'),
-                    code: yup.string().required('Discipline code is required'),
-                    name: yup.string().required('Discipline name is required'),
-                    workload: yup.number().positive().integer().required('Discipline workload is required'),
-                    created_at: yup.date().required('Discipline date is required')
-                })
-            )
+            disciplines: yup.array().of(yup.object().shape({
+                code: yup.string().required('Discipline code is required'),
+                name: yup.string().required('Discipline name is required'),
+                workload: yup.number().positive('Discipline positive number required')
+                    .integer('Discipline workload required whole number').required('Discipline workload is required'),
+                created_at: yup.date().required('Discipline creation date is required')
+            }))
         })
         try {
             await schema.validate(req.body, { abortEarly: true })
@@ -36,22 +33,9 @@ class GridController{
         if(gridAlreadyExists){
             return res.status(400).json({ message: 'Grid already exists!' })
         }
-
         const grid = connectionGrid.create({ course_id: course.id, year, course_name: course.name })
-        console.log(grid)
+        grid.disciplines = disciplines
         await connectionGrid.save(grid)
-
-        const arrayGridDiscipline = []
-        for(let elem of disciplines){
-            arrayGridDiscipline.push({
-                grid_id: grid,
-                discipline_id: elem
-            })
-        }
-        console.log(arrayGridDiscipline)
-
-        const connectGridDiscipline = getCustomRepository(GridDisciplineRepository)
-        await connectGridDiscipline.save(arrayGridDiscipline)
 
         return res.status(201).json(grid)
     }
@@ -98,8 +82,7 @@ class GridController{
                     code: yup.string().required('Discipline code is required'),
                     name: yup.string().required('Discipline name is required'),
                     workload: yup.number().positive().integer().required('Discipline workload is required'),
-                    created_at: yup.date().required('Discipline date is required'),
-                    deleted_at: yup.date().required('Discipline date is required')
+                    created_at: yup.date().required('Discipline date is required')
                 })
             )
         })
