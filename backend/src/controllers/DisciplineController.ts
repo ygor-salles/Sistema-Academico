@@ -59,7 +59,7 @@ class DisciplineController {
         return res.status(404).json({ message: 'Discipline not found!' })
     }
 
-    async delete(req: Request, res: Response) {
+    async softDelete(req: Request, res: Response) {
         const { id } = req.params
 
         const connectionDiscipline = getCustomRepository(DisciplinesRepository)

@@ -71,7 +71,7 @@ class UserController {
         return resp.status(404).json({ message: 'User not found!' })
     }
 
-    async delete(req: Request, resp: Response) {
+    async softDelete(req: Request, resp: Response) {
         const { id } = req.params
 
         const connectionUser = getCustomRepository(UsersRepository)

@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, ManyToMany, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
 import { Grid } from "./Grid";
+import { HistoricDiscipline } from "./HistoricDiscipline";
 
 @Entity('disciplines')
 class Discipline{
@@ -24,6 +25,9 @@ class Discipline{
 
     @ManyToMany(() => Grid, (grid) => grid.disciplines)
     grids: Grid[]
+
+    @OneToMany(() => HistoricDiscipline, (historicDiscipline) => historicDiscipline.discipline)
+    historicDisciplines: HistoricDiscipline[];
 
     constructor(){
         if(!this.id){
