@@ -94,7 +94,7 @@ class HistoricController {
         const connectionHistoric = getCustomRepository(HistoricsRepository)
         const historicsStudent = await connectionHistoric.find({ where: { student: student } })
         if(historicsStudent){
-            await connectionHistoric.delete(student)
+            await connectionHistoric.delete({ student_id: student.id })
             return res.status(200).json({ message: `${student.name} student history successfully removed` })
         }
 
