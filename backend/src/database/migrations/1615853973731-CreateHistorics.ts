@@ -13,10 +13,6 @@ export class CreateHistorics1615853973731 implements MigrationInterface {
                         isPrimary: true
                     },
                     {
-                        name: 'matriculation',
-                        type: 'number'
-                    },
-                    {
                         name: 'semester',
                         type: 'integer'
                     },
@@ -29,11 +25,25 @@ export class CreateHistorics1615853973731 implements MigrationInterface {
                         type: 'timestamp',
                         default: 'now()'
                     },
+                    {
+                        name: 'student_id',
+                        type: 'uuid'
+                    }
                 ],
                 checks: [
                     {
                         columnNames: ['semester'],
                         expression: `semester=1 OR semester=2`
+                    }
+                ],
+                foreignKeys: [
+                    {
+                        name: 'FKStudent',
+                        referencedTableName: 'students',
+                        referencedColumnNames: ['id'],
+                        columnNames: ['student_id'],
+                        onDelete: 'CASCADE',
+                        onUpdate: 'CASCADE'
                     }
                 ]
             })

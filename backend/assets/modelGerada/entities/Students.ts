@@ -1,4 +1,12 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm";
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm";
+import { Historics } from "./Historics";
 import { Courses } from "./Courses";
 
 @Index("students_pkey", ["id"], { unique: true })
@@ -19,6 +27,9 @@ export class Students {
     default: () => "now()",
   })
   createdAt: Date;
+
+  @OneToMany(() => Historics, (historics) => historics.student)
+  historics: Historics[];
 
   @ManyToOne(() => Courses, (courses) => courses.students, {
     onDelete: "CASCADE",

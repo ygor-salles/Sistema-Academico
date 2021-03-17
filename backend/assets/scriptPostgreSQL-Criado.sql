@@ -53,10 +53,12 @@ CREATE TABLE grid_discipline (
 
 CREATE TABLE historics (
 	id UUID PRIMARY KEY NOT NULL,
-	matriculation INTEGER NOT NULL,
 	semester SMALLINT CHECK(semester=1 OR semester=2) NOT NULL,
 	year SMALLINT NOT NULL,
-	created_at TIMESTAMP NOT NULL DEFAULT (now())
+	created_at TIMESTAMP NOT NULL DEFAULT (now()),
+	student_id UUID,
+	CONSTRAINT FKStudent FOREIGN KEY (student_id) REFERENCES students(id)
+		ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE historic_discipline (

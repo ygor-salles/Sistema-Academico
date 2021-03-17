@@ -3,6 +3,7 @@ import { AuthController } from './controllers/AuthController'
 import { CourseController } from './controllers/CourseController'
 import { DisciplineController } from './controllers/DisciplineController'
 import { GridController } from './controllers/GridController'
+import { HistoricController } from './controllers/HistoricController'
 import { StudentController } from './controllers/StudentController'
 import { UserController } from './controllers/UserController'
 import authMiddleware from './middlewares/authMiddleware'
@@ -15,6 +16,7 @@ const disciplineController = new DisciplineController()
 const courseController = new CourseController()
 const studentController = new StudentController()
 const gridController = new GridController()
+const historicController = new HistoricController()
 
 router.post('/auth', authController.authenticate)
 
@@ -47,6 +49,12 @@ router.get('/grids', gridController.ready)
 router.get('/grids/:course_id', gridController.readyByCourseId)
 router.delete('/grids/:course_id', gridController.delete)
 router.put('/grids/:course_id', gridController.update)
+
+router.post('/historics', historicController.create)
+router.get('/historics', historicController.readyByStudent)
+router.delete('/historics/:id', historicController.deleteById)
+router.delete('/historics', historicController.deleteByStudent)
+router.put('/historics/:id', historicController.update)
 
 export { router }
 
