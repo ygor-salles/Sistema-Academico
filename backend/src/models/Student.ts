@@ -8,7 +8,7 @@ class Student {
     readonly id: string;
 
     @Column({ unique: true })
-    matriculation: string;
+    matriculation: number;
 
     @Column()
     name: string;
