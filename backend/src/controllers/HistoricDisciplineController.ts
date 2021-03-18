@@ -3,15 +3,18 @@ import { Request, Response } from 'express';
 import * as yup from 'yup';
 import { HistoricDisciplinesRepository } from '../repositories/HistoricDisciplineRepository';
 import { CoursesRepository } from '../repositories/CoursesRepository';
+import { DisciplinesRepository } from '../repositories/DisciplinesRepository';
+import { HistoricsRepository } from '../repositories/HistoricsRepository';
 
 class HistoricDisciplineController {
     async execute(req: Request, res: Response) {
-        const { matriculation, historic_id, discipline_id, note_disicipline } = req.body
+        const { matriculation, historic_id, discipline_id, note_discipline } = req.body
 
         const schema = yup.object().shape({
+            matriculation: yup.string().required('Matriculation is required'),
             historic_id: yup.string().required('Historic id is required'),
             discipline_id: yup.string().required('Historic id is required'),
-            note_disicipline: yup.string().required('Historic id is required'),
+            note_discipline: yup.string().required('Historic id is required'),
         })
         try {
             await schema.validate(req.body, { abortEarly: false })
@@ -20,26 +23,37 @@ class HistoricDisciplineController {
         }
 
         const connectHistDisc = getCustomRepository(HistoricDisciplinesRepository)
-        const histDisc = await connectHistDisc.findOne({ 
-            where: {historic_id, discipline_id}, 
-            relations: ['historics', 'disciplines'] 
+        const connectDiscipline = getCustomRepository(DisciplinesRepository)
+        const connectHistoric = getCustomRepository(HistoricsRepository)
+
+        const discipline = await connectDiscipline.findOne({ id: discipline_id })
+        const historic = await connectHistoric.findOne({ id: historic_id })
+
+        const histDiscAlreadyExists = await connectHistDisc.findOne({ 
+            where: {historic_id, discipline_id} 
         })
-        if(histDisc){
+        if(histDiscAlreadyExists){
             return res.status(400).json({ message: 'You cannot take two courses in the same semester!' })
         }
         
         // lógica de status
         let status: string
-        note_disicipline >= 6 ? status='APROVADO' : status='REPROVADO'
+        note_discipline >= 6 ? status='APROVADO' : status='REPROVADO'
         
         // logica de required, se a disciplina é obrigatória ou não
-        const grid = await this.studentGridSearch(matriculation, req, res)
-        if(!grid){
-            return res.status(404).json({ message: 'Grid student not found!' })
-        }
+        // const grid = await this.studentGridSearch(matriculation, req, res)
+        // if(!grid){
+        //     return res.status(404).json({ message: 'Grid student not found!' })
+        // }
 
-        let required: boolean
-        this.verifyMandatoryDiscipline(grid.course_id, discipline_id) ? required=true : required=false
+        // let required: boolean
+        // this.verifyMandatoryDiscipline(grid.course_id, discipline_id) ? required=true : required=false
+
+        const required: boolean = true
+
+        const histDisc = connectHistDisc.create({ historic_id, discipline_id, note_discipline, status, required })
+        await connectHistDisc.save(histDisc)
+        res.status(201).json(histDisc)
     }
 
     async studentGridSearch(matriculation: number, req: Request, res: Response) {
@@ -54,7 +68,7 @@ class HistoricDisciplineController {
         return null
     }
 
-    async verifyMandatoryDiscipline(grid_id, discipline_id) {
+    async verifyMandatoryDiscipline(grid_id: string, discipline_id: string) {
         
     }
 }
