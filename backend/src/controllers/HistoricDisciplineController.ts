@@ -1,10 +1,9 @@
-import { getCustomRepository } from 'typeorm';
 import { Request, Response } from 'express';
+import { getCustomRepository } from 'typeorm';
 import * as yup from 'yup';
-import { HistoricDisciplinesRepository } from '../repositories/HistoricDisciplineRepository';
 import { CoursesRepository } from '../repositories/CoursesRepository';
-import { DisciplinesRepository } from '../repositories/DisciplinesRepository';
-import { HistoricsRepository } from '../repositories/HistoricsRepository';
+import { GridDisciplinesRepository } from '../repositories/GridDisciplineRepository';
+import { HistoricDisciplinesRepository } from '../repositories/HistoricDisciplineRepository';
 
 class HistoricDisciplineController {
     async execute(req: Request, res: Response) {
@@ -23,12 +22,6 @@ class HistoricDisciplineController {
         }
 
         const connectHistDisc = getCustomRepository(HistoricDisciplinesRepository)
-        const connectDiscipline = getCustomRepository(DisciplinesRepository)
-        const connectHistoric = getCustomRepository(HistoricsRepository)
-
-        const discipline = await connectDiscipline.findOne({ id: discipline_id })
-        const historic = await connectHistoric.findOne({ id: historic_id })
-
         const histDiscAlreadyExists = await connectHistDisc.findOne({ 
             where: {historic_id, discipline_id} 
         })
@@ -41,22 +34,19 @@ class HistoricDisciplineController {
         note_discipline >= 6 ? status='APROVADO' : status='REPROVADO'
         
         // logica de required, se a disciplina é obrigatória ou não
-        // const grid = await this.studentGridSearch(matriculation, req, res)
-        // if(!grid){
-        //     return res.status(404).json({ message: 'Grid student not found!' })
-        // }
+        const grid = await this.studentGridSearch(matriculation)
+        if(!grid){
+            return res.status(404).json({ message: 'Grid student not found!' })
+        }
 
-        // let required: boolean
-        // this.verifyMandatoryDiscipline(grid.course_id, discipline_id) ? required=true : required=false
-
-        const required: boolean = true
+        const required = await this.verifyMandatoryDiscipline(grid.course_id, discipline_id)
 
         const histDisc = connectHistDisc.create({ historic_id, discipline_id, note_discipline, status, required })
         await connectHistDisc.save(histDisc)
         res.status(201).json(histDisc)
     }
 
-    async studentGridSearch(matriculation: number, req: Request, res: Response) {
+    async studentGridSearch(matriculation: number) {
         const connectCourse = getCustomRepository(CoursesRepository)
         const allCourse = await connectCourse.find()
         allCourse.forEach(course => {
@@ -69,8 +59,13 @@ class HistoricDisciplineController {
     }
 
     async verifyMandatoryDiscipline(grid_id: string, discipline_id: string) {
-        
+        const connectGridDisc = getCustomRepository(GridDisciplinesRepository)
+        const gridDisc = await connectGridDisc.findOne({ where: { grid_id, discipline_id } })
+        if(gridDisc){
+            return true
+        }
+        return false
     }
 }
 
-export { HistoricDisciplineController }
+export { HistoricDisciplineController };

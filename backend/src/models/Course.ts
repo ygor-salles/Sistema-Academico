@@ -17,8 +17,7 @@ class Course{
     @OneToMany(() => Student, student => student.course, { eager: true })
     students: Student[]
 
-    // @OneToOne(() => Grid, grid => grid.course, { eager: true })
-    @OneToOne(() => Grid, grid => grid.course)
+    @OneToOne(() => Grid, grid => grid.course, { eager: true })
     grid: Grid
 
     constructor(){
