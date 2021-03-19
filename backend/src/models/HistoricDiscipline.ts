@@ -23,7 +23,7 @@ class HistoricDiscipline {
     @CreateDateColumn()
     created_at: Date
 
-    @ManyToOne(() => Discipline, (disciplines) => disciplines.historicDisciplines)
+    @ManyToOne(() => Discipline, (disciplines) => disciplines.historicDisciplines, { eager: true })
     @JoinColumn([{ name: "discipline_id", referencedColumnName: "id" }])
     discipline: Discipline;
     
