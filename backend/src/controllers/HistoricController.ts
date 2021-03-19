@@ -1,10 +1,11 @@
+import { NextFunction } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { Request, Response } from 'express';
 import * as yup from 'yup';
 import { HistoricsRepository } from '../repositories/HistoricsRepository';
 
 class HistoricController {
-    async create(req: Request, res: Response) {
+    async create(req: Request, res: Response, next: NextFunction) {
         const { student, semester, year } = req.body
 
         const schema = yup.object().shape({
@@ -34,7 +35,8 @@ class HistoricController {
 
         const historic = connectionHistoric.create({ student, semester, year })
         await connectionHistoric.save(historic)
-        return res.status(201).json(historic)
+        req.body.historic_id = historic.id
+        next()
     }
 
     async readyByStudent(req: Request, res: Response) {

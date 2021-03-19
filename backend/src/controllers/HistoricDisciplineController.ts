@@ -7,15 +7,15 @@ import { StudentsRepository } from '../repositories/StudentsRepository';
 
 class HistoricDisciplineController {
     async execute(req: Request, res: Response) {
-        const { listHistoric } = req.body
+        const { listHistoric, historic_id } = req.body
 
         const schema = yup.object().shape({
             listHistoric: yup.array().of(yup.object().shape({
                 matriculation: yup.string().required('Matriculation is required'),
-                historic_id: yup.string().required('Historic id is required'),
                 discipline_id: yup.string().required('Historic id is required'),
                 note_discipline: yup.string().required('Historic id is required')
-            }))
+            })),
+            historic_id: yup.string().required('Historic id is required')
         })
         try {
             await schema.validate(req.body, { abortEarly: false })
@@ -28,7 +28,7 @@ class HistoricDisciplineController {
         const listGridDiscSave = []
         for(let elem of listHistoric){
             const histDiscAlreadyExists = await connectHistDisc.findOne({ 
-                where: { historic_id: elem.historic_id, discipline_id: elem.discipline_id } 
+                where: { historic_id: historic_id, discipline_id: elem.discipline_id } 
             })
             if(histDiscAlreadyExists){
                 return res.status(400).json({ message: 'You cannot take two courses in the same semester!' })
@@ -49,7 +49,7 @@ class HistoricDisciplineController {
             const required = await verifyMandatoryDiscipline(student.course_id, elem.discipline_id)
     
             const histDisc = connectHistDisc.create({ 
-                historic_id: elem.historic_id, 
+                historic_id: historic_id, 
                 discipline_id: elem.discipline_id,
                 note_discipline: elem.note_discipline, 
                 status, 

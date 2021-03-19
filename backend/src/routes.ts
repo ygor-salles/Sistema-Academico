@@ -52,13 +52,11 @@ router.get('/grids/:course_id', gridController.readyByCourseId)
 router.delete('/grids/:course_id', gridController.delete)
 router.put('/grids/:course_id', gridController.update)
 
-router.post('/historics', historicController.create)
+router.post('/historics', historicController.create, historicDisciplineController.execute)
 router.get('/historics', historicController.readyByStudent)
 router.delete('/historics/:id', historicController.deleteById)
 router.delete('/historics', historicController.deleteByStudent)
 router.put('/historics/:id', historicController.update)
-
-router.post('/histDisc', historicDisciplineController.execute)
 
 export { router }
 
