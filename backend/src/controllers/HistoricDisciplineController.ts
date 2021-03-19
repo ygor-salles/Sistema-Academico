@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { CoursesRepository } from '../repositories/CoursesRepository';
 import { GridDisciplinesRepository } from '../repositories/GridDisciplineRepository';
 import { HistoricDisciplinesRepository } from '../repositories/HistoricDisciplineRepository';
+import { StudentsRepository } from '../repositories/StudentsRepository';
 
 class HistoricDisciplineController {
     async execute(req: Request, res: Response) {
@@ -34,15 +35,15 @@ class HistoricDisciplineController {
         note_discipline >= 6 ? status='APROVADO' : status='REPROVADO'
         
         // logica de required, se a disciplina é obrigatória ou não
-        // Verificar o curso do estudante
-        const grid = await studentGridSearch(matriculation)
-        console.log(grid)
-        if(!grid){
+        // Verificar o curso do estudante, pois o id da Grade é o mesmo do curso
+        const student = await studentCourseSearch(matriculation)
+        console.log(student)
+        if(!student){
             return res.status(404).json({ message: 'Grid student not found!' })
         }
 
         // verifica se a disciplina é obrigatória na grade do curso do aluno
-        const required = await verifyMandatoryDiscipline(grid.course_id, discipline_id)
+        const required = await verifyMandatoryDiscipline(student.course_id, discipline_id)
 
         const histDisc = connectHistDisc.create({ historic_id, discipline_id, note_discipline, status, required })
         await connectHistDisc.save(histDisc)
@@ -51,14 +52,9 @@ class HistoricDisciplineController {
 
 }
 
-export async function studentGridSearch(matriculation: number) {
-    const connectCourse = getCustomRepository(CoursesRepository)
-    const allCourse = await connectCourse.find()
-    for(let course of allCourse){
-        return course.students.find(student => student.matriculation == matriculation)
-    }
-    console.log('Não pode vir aqui')
-    return null
+export async function studentCourseSearch(matriculation: number) {
+    const connectStudent = getCustomRepository(StudentsRepository)
+    return await connectStudent.findOne({ matriculation })
 }
 
 export async function verifyMandatoryDiscipline(grid_id: string, discipline_id: string) {
