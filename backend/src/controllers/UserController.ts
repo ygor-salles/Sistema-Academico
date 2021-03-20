@@ -9,13 +9,14 @@ class UserController {
     }
 
     async create(req: Request, resp: Response) {
-        const { name, email, password, confirm_password } = req.body
+        const { name, email, password, confirm_password, admin } = req.body
 
         const schema = yup.object().shape({
             name: yup.string().required('Name is required'),
             email: yup.string().email('Email incorrect').required('Email is required'),
             password: yup.string().required('Password is required'),
-            confirm_password: yup.string().required('Confirm password is required')
+            confirm_password: yup.string().required('Confirm password is required'),
+            admin: yup.bool().required('Administrator field verification required')
         })
         try {
             await schema.validate(req.body, { abortEarly: false })
@@ -39,7 +40,7 @@ class UserController {
             return resp.status(404).json({ message: 'User already exists!' })
         }
         else {
-            const user = connectionUser.create({ name, email, password })
+            const user = connectionUser.create({ name, email, password, admin })
             await connectionUser.save(user)
             delete user.password
             return resp.status(201).json(user)

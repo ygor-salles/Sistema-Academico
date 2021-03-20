@@ -17,6 +17,9 @@ class User {
     @Column()
     password: string
 
+    @Column()
+    admin: boolean
+
     @BeforeInsert()
     @BeforeUpdate()
     hashPassword() {

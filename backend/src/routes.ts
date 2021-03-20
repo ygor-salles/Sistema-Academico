@@ -8,6 +8,7 @@ import { HistoricDisciplineController } from './controllers/HistoricDisciplineCo
 import { StudentController } from './controllers/StudentController'
 import { UserController } from './controllers/UserController'
 import authMiddleware from './middlewares/authMiddleware'
+import authMiddlewareAdmin from './middlewares/authMiddlewareAdmin'
 
 const router = Router()
 
@@ -22,17 +23,17 @@ const historicDisciplineController = new HistoricDisciplineController()
 
 router.post('/auth', authController.authenticate)
 
-router.post('/users', authMiddleware, userController.create)
-router.get('/users', authMiddleware, userController.ready)
-router.get('/users/:id', authMiddleware, userController.readyById)
-router.delete('/users/:id', authMiddleware, userController.softDelete)
-router.put('/users/:id', authMiddleware, userController.update)
+router.post('/users', authMiddlewareAdmin, userController.create)
+router.get('/users', authMiddlewareAdmin, userController.ready)
+router.get('/users/:id', authMiddlewareAdmin, userController.readyById)
+router.delete('/users/:id', authMiddlewareAdmin, userController.softDelete)
+router.put('/users/:id', authMiddlewareAdmin, userController.update)
 
-router.post('/disciplines', disciplineController.create)
-router.get('/disciplines', disciplineController.ready)
-router.get('/disciplines/:id', disciplineController.readyById)
-router.delete('/disciplines/:id', disciplineController.softDelete)
-router.put('/disciplines/:id', disciplineController.update)
+router.post('/disciplines', authMiddleware, disciplineController.create)
+router.get('/disciplines', authMiddleware, disciplineController.ready)
+router.get('/disciplines/:id', authMiddleware, disciplineController.readyById)
+router.delete('/disciplines/:id', authMiddleware, disciplineController.softDelete)
+router.put('/disciplines/:id', authMiddleware, disciplineController.update)
 
 router.post('/courses', courseController.create)
 router.get('/courses', courseController.ready)

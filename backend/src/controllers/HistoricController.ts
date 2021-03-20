@@ -3,6 +3,7 @@ import { getCustomRepository } from 'typeorm';
 import { Request, Response } from 'express';
 import * as yup from 'yup';
 import { HistoricsRepository } from '../repositories/HistoricsRepository';
+import { StudentsRepository } from '../repositories/StudentsRepository';
 
 class HistoricController {
     async create(req: Request, res: Response, next: NextFunction) {
@@ -17,7 +18,12 @@ class HistoricController {
                 created_at: yup.date().required('Student created_at is required')
             }),
             semester: yup.number().required('Semester is required'),
-            year: yup.number().required('Year is required')
+            year: yup.number().required('Year is required'),
+            listHistoric: yup.array().of(yup.object().shape({
+                matriculation: yup.string().required('Matriculation is required'),
+                discipline_id: yup.string().required('Historic id is required'),
+                note_discipline: yup.string().required('Historic id is required')
+            })),
         })
         try {
             await schema.validate(req.body, { abortEarly: false })
@@ -55,6 +61,12 @@ class HistoricController {
             await schema.validate(req.body, { abortEarly: false })
         } catch (error) {
             return res.status(400).json({ message: error })
+        }
+
+        const connectStudent = getCustomRepository(StudentsRepository)
+        const studentAlreadyExists = await connectStudent.findOne({ where: { id: student.id } })
+        if(!studentAlreadyExists){
+            return res.status(404).json({ message: 'Student not found!' })
         }
 
         const connectionHistoric = getCustomRepository(HistoricsRepository)

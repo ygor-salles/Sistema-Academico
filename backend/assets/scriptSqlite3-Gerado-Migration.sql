@@ -1,5 +1,5 @@
 query: BEGIN TRANSACTION
-query: CREATE TABLE "users" ("id" uuid PRIMARY KEY NOT NULL, "name" varchar NOT NULL, "email" varchar NOT NULL, "password" varchar NOT NULL, "created_at" timestamp NOT NULL DEFAULT (now()), "deleted_at" timestamp, CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"))
+query: CREATE TABLE "users" ("id" uuid PRIMARY KEY NOT NULL, "name" varchar NOT NULL, "email" varchar NOT NULL, "password" varchar NOT NULL, "admin" boolean NOT NULL, "created_at" timestamp NOT NULL DEFAULT (now()), "deleted_at" timestamp, CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"))
 query: INSERT INTO "migrations"("timestamp", "name") VALUES (?, ?) -- PARAMETERS: [1614805099915,"CreateUsers1614805099915"]
 Migration CreateUsers1614805099915 has been executed successfully.
 query: CREATE TABLE "disciplines" ("id" uuid PRIMARY KEY NOT NULL, "code" varchar NOT NULL, "name" varchar NOT NULL, "workload" integer NOT NULL, "created_at" timestamp NOT NULL DEFAULT (now()), "deleted_at" timestamp, CONSTRAINT "UQ_a985c1bbe7fc381e1174b6f8843" UNIQUE ("code"))       
