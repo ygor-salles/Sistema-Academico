@@ -42,7 +42,7 @@ router.delete('/courses/:id', courseController.delete)
 router.put('/courses/:id', courseController.update)
 
 router.post('/students', studentController.create)
-router.get('/students', studentController.ready)
+router.get('/students/:page', studentController.ready)
 router.get('/students/:id', studentController.readyById)
 router.delete('/students/:id', studentController.delete)
 router.put('/students/:id', studentController.update)

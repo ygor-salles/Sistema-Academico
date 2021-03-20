@@ -34,9 +34,21 @@ class StudentController{
     }
 
     async ready(req: Request, resp: Response){
+        const { page }  = req.params
+        const pageSkip = parseInt(page)
+        const limit = 3
+        console.log(pageSkip)
+
         const connectionStudent = getCustomRepository(StudentsRepository)
-        const allStudents = await connectionStudent.find()
-        return resp.json(allStudents) 
+        const count = await connectionStudent.count()
+        const allStudents = await connectionStudent.find({
+            order: {
+                created_at: 'ASC'
+            },
+            skip: pageSkip * limit - limit,
+            take: limit
+        })
+        return resp.json({ data: allStudents, count, limit }) 
     }
 
     async readyById(req: Request, resp: Response){
