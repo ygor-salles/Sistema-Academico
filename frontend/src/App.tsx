@@ -4,6 +4,7 @@ import { MainApp } from './components/templates/main/MainApp';
 import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { useStyles } from './AppStyles'
+import { FooterApp } from './components/templates/footer/FooterApp';
 
 function App() {
   const classes = useStyles();
@@ -14,6 +15,7 @@ function App() {
       <HeaderApp />
       <NavApp />
       <MainApp />
+      <FooterApp />
     </div>
   );
 }
