@@ -8,7 +8,7 @@ export function FooterApp() {
 
   return (
     <div>
-      <AppBar position="fixed" className={classes.appBar}>
+      <AppBar position="fixed" color="transparent" className={classes.appBar}>
         <Toolbar>
           <Typography align="right" className={classes.grow}>
             Desenvolvido por Ygor Salles
