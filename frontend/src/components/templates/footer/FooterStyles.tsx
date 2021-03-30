@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     grow: {
         flexGrow: 1,
-        height: 30
+        height: 40
     },
     appBar: {
         top: 'auto',
