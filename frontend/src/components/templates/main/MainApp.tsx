@@ -1,14 +1,12 @@
-import { CssBaseline } from "@material-ui/core";
-import { useStyles } from './MainStyles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { useStyles } from './MainStyles';
 
 export function MainApp() {
     const classes = useStyles();
 
     return (
         <div>
-            <CssBaseline />
             <main className={classes.content}>
                 <Toolbar />
                 <Typography paragraph>
