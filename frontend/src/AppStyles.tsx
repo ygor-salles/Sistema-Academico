@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#EB846E',
+      main: '#242939',
       contrastText: '#FFF'
     },
     // secondary: {
