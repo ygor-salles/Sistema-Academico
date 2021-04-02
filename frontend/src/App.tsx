@@ -1,16 +1,8 @@
 import React from 'react';
-import { createStyles, Theme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { theme } from './AppStyles';
-import { Routes } from './Routes';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-    },
-  }),
-);
+import { theme, useStyles } from './AppStyles';
+import Routes  from './Routes';
 
 function App() {
   const classes = useStyles();
