@@ -2,10 +2,7 @@ import React from 'react';
 import { createStyles, Theme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { theme } from './AppStyles';
-import HeaderApp from './components/template/header/HeaderApp';
-import NavApp from './components/template/nav/NavApp';
-import MainApp from './components/template/main/MainApp';
-import { FooterApp } from './components/template/footer/Footer';
+import { Routes } from './Routes';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -22,10 +19,7 @@ function App() {
     <div className={classes.root}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <HeaderApp />
-        <NavApp />
-        <MainApp />
-        <FooterApp />
+        <Routes />
       </ThemeProvider>
     </div>
   );
