@@ -5,6 +5,7 @@ import { theme } from './AppStyles';
 import HeaderApp from './components/template/header/HeaderApp';
 import NavApp from './components/template/nav/NavApp';
 import MainApp from './components/template/main/MainApp';
+import { FooterApp } from './components/template/footer/Footer';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -24,6 +25,7 @@ function App() {
         <HeaderApp />
         <NavApp />
         <MainApp />
+        <FooterApp />
       </ThemeProvider>
     </div>
   );
