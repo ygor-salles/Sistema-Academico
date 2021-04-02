@@ -6,11 +6,11 @@ import HeaderApp from './components/template/header/HeaderApp';
 import MainApp from './components/template/main/MainApp';
 import NavApp from './components/template/nav/NavApp';
 import Toolbar from '@material-ui/core/Toolbar';
-import Discipline from './components/discipline/Discipline';
-import Course from './components/course/Course';
-import Grid from './components/grid/Grid';
-import Student from './components/student/Student';
-import Historic from './components/historic/Historic';
+import DisciplineComponent from './components/discipline/DisciplineComponent';
+import CourseComponent from './components/course/CourseComponent';
+import GridComponent from './components/grid/GridComponent';
+import StudentComponent from './components/student/StudentComponent';
+import HistoricComponent from './components/historic/HistoricComponent';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,19 +38,19 @@ function Routes() {
                 <Toolbar />
                 <Switch>
                     <Route path="/disciplines">
-                        <Discipline />
+                        <DisciplineComponent />
                     </Route>
                     <Route path="/courses">
-                        <Course />
+                        <CourseComponent />
                     </Route>
                     <Route path="/grids">
-                        <Grid />
+                        <GridComponent />
                     </Route>
                     <Route path="/students">
-                        <Student />
+                        <StudentComponent />
                     </Route>
                     <Route path="/historics">
-                        <Historic />
+                        <HistoricComponent />
                     </Route>
                     <Route path="/">
                         <MainApp />
