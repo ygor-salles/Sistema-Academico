@@ -37,8 +37,7 @@ class StudentController{
         const { page }  = req.params
         const pageSkip = parseInt(page)
         const limit = 3
-        console.log(pageSkip)
-
+        
         const connectionStudent = getCustomRepository(StudentsRepository)
         const count = await connectionStudent.count()
         const allStudents = await connectionStudent.find({
