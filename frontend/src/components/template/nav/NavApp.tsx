@@ -11,6 +11,7 @@ import GridOnIcon from '@material-ui/icons/GridOn';
 import SchoolIcon from '@material-ui/icons/School';
 import FolderSharedIcon from '@material-ui/icons/FolderShared';
 import { withRouter } from "react-router-dom";
+import GroupIcon from '@material-ui/icons/Group';
 
 type Props = {
   history: any;
@@ -62,6 +63,11 @@ function NavApp(props: Props) {
           text: 'Historico',
           icon: <FolderSharedIcon />,
           onclick: () => history.push('/historics')
+        },
+        {
+          text: 'Usuários',
+          icon: <GroupIcon />,
+          onclick: () => history.push('/users')
         },
       ]
     

@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-function MainApp() {
+function HomeComponent() {
   const classes = useStyles();
 
   return (
@@ -46,4 +46,4 @@ function MainApp() {
   );
 }
 
-export default MainApp;
+export default HomeComponent;

@@ -8,17 +8,16 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import React, { useEffect, useState } from 'react';
-import { Discipline } from '../../models/discipline.model';
-import { fetchDisciplines } from '../../services/discipline.service';
-import { columns, useStyles } from './DisciplineUtils'
+import { User } from '../../models/user.model';
+import { fetchUsers } from '../../services/user.service';
+import { columns, useStyles } from './UserUtils'
 
-function DisciplineComponent() {
-
-    const [disciplines, setDisciplines] = useState<Discipline[]>([]);
+function UserComponent() {
+    const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
-        fetchDisciplines()
-            .then(response => setDisciplines(response.data))
+        fetchUsers()
+            .then(response => setUsers(response.data))
             .catch(error => console.log(error))
     }, []);
 
@@ -55,9 +54,9 @@ function DisciplineComponent() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {disciplines.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.email}>
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
@@ -75,7 +74,7 @@ function DisciplineComponent() {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 15]}
                     component="div"
-                    count={disciplines.length}
+                    count={users.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onChangePage={handleChangePage}
@@ -89,4 +88,4 @@ function DisciplineComponent() {
     );
 }
 
-export default DisciplineComponent;
+export default UserComponent

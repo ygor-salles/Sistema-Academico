@@ -1,9 +1,7 @@
-import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { FooterApp } from './components/template/footer/Footer';
 import HeaderApp from './components/template/header/HeaderApp';
-import MainApp from './components/template/main/MainApp';
 import NavApp from './components/template/nav/NavApp';
 import Toolbar from '@material-ui/core/Toolbar';
 import DisciplineComponent from './components/discipline/DisciplineComponent';
@@ -11,6 +9,8 @@ import CourseComponent from './components/course/CourseComponent';
 import GridComponent from './components/grid/GridComponent';
 import StudentComponent from './components/student/StudentComponent';
 import HistoricComponent from './components/historic/HistoricComponent';
+import UserComponent from './components/user/UserComponent';
+import HomeComponent from './components/home/HomeComponent';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,8 +52,11 @@ function Routes() {
                     <Route path="/historics">
                         <HistoricComponent />
                     </Route>
+                    <Route path="/users">
+                        <UserComponent />
+                    </Route>
                     <Route path="/">
-                        <MainApp />
+                        <HomeComponent />
                     </Route>
                 </Switch>    
             </main>
