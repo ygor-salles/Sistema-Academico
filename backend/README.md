@@ -3,7 +3,11 @@
 * Instalar as dependencias:
 
 ```bash
-yarn add
+npm install
+```
+
+```bash
+yarn
 ```
 
 * Rodar o projeto
@@ -11,8 +15,6 @@ yarn add
 ```bash
 yarn dev
 ```
-
-*
 
 * Criar uma migration:
 
