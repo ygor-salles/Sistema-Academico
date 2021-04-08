@@ -10,32 +10,45 @@ import TableRow from '@material-ui/core/TableRow';
 import React, { useEffect, useState } from 'react';
 import { Discipline } from '../../models/discipline.model';
 import { fetchDisciplines } from '../../services/discipline.service';
-import { columns, useStyles } from './DisciplineUtils'
+import { columns, useStyles, initForm, FormDiscipline } from './DisciplineUtils';
+import DialogDiscipline  from './DialogDiscipline';
 
 function DisciplineComponent() {
-
+    // Componente de estilização
+    const classes = useStyles();
+    
+    // Ao inicializar o componente, carrega todas as displinas
     const [disciplines, setDisciplines] = useState<Discipline[]>([]);
-
     useEffect(() => {
         fetchDisciplines()
             .then(response => setDisciplines(response.data))
             .catch(error => console.log(error))
     }, []);
 
-
-    const classes = useStyles();
+    // Usado para a paginação: pagina, itens por página
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
-
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
     };
 
+    // Usado para componente do modal de cadastro
+    const [open, setOpen] = React.useState(false);
+    const [selectedValue, setSelectedValue] = React.useState(initForm);
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = (obj: FormDiscipline) => {
+        setOpen(false);
+        setSelectedValue(obj);
+        console.log(obj);
+    };
+
+    
     return (
         <>
             <Paper className={classes.root}>
@@ -44,11 +57,7 @@ function DisciplineComponent() {
                         <TableHead>
                             <TableRow>
                                 {columns.map((column) => (
-                                    <TableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                    >
+                                    <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
                                         {column.label}
                                     </TableCell>
                                 ))}
@@ -82,9 +91,10 @@ function DisciplineComponent() {
                     onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
             </Paper>
-            <Button variant="contained" color="primary" className={classes.butonContainer}>
+            <Button variant="contained" color="primary" onClick={handleClickOpen} className={classes.butonContainer}>
                 Cadastrar
             </Button>
+            <DialogDiscipline selectedValue={selectedValue} open={open} onClose={handleClose} />
         </>
     );
 }

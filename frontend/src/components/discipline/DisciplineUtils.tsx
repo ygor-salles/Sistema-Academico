@@ -24,7 +24,13 @@ const useStyles = makeStyles({
     },
     butonContainer: {
         marginTop: 20
-    }
+    },
+    inputForm: {
+        marginBottom: 20
+    } 
 });
 
-export { columns, useStyles };
+export type FormDiscipline = { code: string, name: string, workload: number };
+const initForm: FormDiscipline = { code: '', name: '', workload: 0 };
+
+export { columns, useStyles, initForm };
