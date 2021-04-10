@@ -37,18 +37,18 @@ function DialogDiscipline({ selectedValue, open, onClose }: Props) {
                 <DialogContent>
                     <form noValidate autoComplete="off">
                         <TextField className={classes.inputForm} id="code" label="Code discipline"
-                            value={codeDisc} fullWidth
+                            value={codeDisc} fullWidth color="secondary"
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCodeDisc(e.target.value)}  />
                         <TextField className={classes.inputForm} id="name" label="Name discipline"
-                            value={nameDisc} fullWidth
+                            value={nameDisc} fullWidth color="secondary"
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNameDisc(e.target.value)} />
                         <TextField className={classes.inputForm} id="workload" label="Workload discipline"
-                            value={workloadDisc} fullWidth
+                            value={workloadDisc} fullWidth color="secondary"
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWorkloadDisc(+e.target.value)} />
                     </form>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose} color="primary">
+                    <Button onClick={handleClose}>
                         Cancelar
                 </Button>
                     <Button onClick={handleSubmit} variant="contained" color="primary">

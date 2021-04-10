@@ -27,9 +27,12 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       drawerPaper: {
         width: drawerWidth,
+        backgroundColor: '#444e83',
+        color: '#fff'
       },
       drawerContainer: {
         overflow: 'auto',
+        backgroundColor: '#444e83'
       },
   }),
 );
@@ -41,32 +44,32 @@ function NavApp(props: Props) {
       const itemsList = [
         {
           text: 'Disciplina',
-          icon: <BookIcon />,
+          icon: <BookIcon htmlColor="#fff" />,
           onclick: () => history.push('/disciplines')
         },
         {
           text: 'Curso',
-          icon: <MenuBookIcon />,
+          icon: <MenuBookIcon htmlColor="#fff" />,
           onclick: () => history.push('/courses')
         },
         {
           text: 'Grade',
-          icon: <GridOnIcon />,
+          icon: <GridOnIcon htmlColor="#fff" />,
           onclick: () => history.push('/grids')
         },
         {
           text: 'Aluno',
-          icon: <SchoolIcon />,
+          icon: <SchoolIcon htmlColor="#fff" />,
           onclick: () => history.push('/students')
         },
         {
           text: 'Historico',
-          icon: <FolderSharedIcon />,
+          icon: <FolderSharedIcon htmlColor="#fff" />,
           onclick: () => history.push('/historics')
         },
         {
           text: 'Usuários',
-          icon: <GroupIcon />,
+          icon: <GroupIcon htmlColor="#fff" />,
           onclick: () => history.push('/users')
         },
       ]

@@ -16,16 +16,16 @@ function App() {
   );
   const classes = useStyles();
 
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  // paletas de cores legais: #7b1fa2 #444e83 #3f51b5: https://material-ui.com/pt/customization/palette/
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: light)');
+  // paletas de cores legais: #7b1fa2 #444e83 #3f51b5 #212121: https://material-ui.com/pt/customization/palette/
 
   const theme = React.useMemo(
     () =>
       createMuiTheme({
         palette: {
           type: prefersDarkMode ? 'dark' : 'light',
-          // primary: { main: prefersDarkMode ? '#242939' : '#242939' },
-          // secondary: { main: prefersDarkMode ? '#C4C4C4' : '#C4C4C4' }
+          primary: { main: prefersDarkMode ? '#7b1fa2' : '#7b1fa2' },
+          secondary: { main: prefersDarkMode ? '#fff' : '#7b1fa2' }
         },
       }),
     [prefersDarkMode],
