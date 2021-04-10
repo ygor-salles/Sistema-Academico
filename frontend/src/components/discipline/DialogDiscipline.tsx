@@ -1,5 +1,6 @@
 import { Button, TextField, DialogTitle, DialogContent, DialogActions, Dialog } from '@material-ui/core';
 import React from 'react';
+import api from '../../services/discipline.service';
 import { FormDiscipline, useStyles } from './DisciplineUtils';
 
 type Props = {
@@ -17,17 +18,23 @@ function DialogDiscipline({ selectedValue, open, onClose }: Props) {
         onClose(selectedValue);
     };
 
-    const [codeDisc, setCodeDisc] = React.useState('');
-    const [nameDisc, setNameDisc] = React.useState('');
-    const [workloadDisc, setWorkloadDisc] = React.useState(0);
+    const [codeDisc, setCodeDisc] = React.useState(selectedValue.code);
+    const [nameDisc, setNameDisc] = React.useState(selectedValue.name);
+    const [workloadDisc, setWorkloadDisc] = React.useState(selectedValue.workload);
 
-    function handleSubmit(){
+    async function handleSubmit(){
         const data = {
             code: codeDisc,
             name: nameDisc,
             workload: workloadDisc
         }
-        console.log(data)
+        const response = await api.post('disciplines', data);
+        console.log(response);
+        if(response.status===201 || response.status===200){
+            window.location.href='/disciplines';
+        } else {
+            alert('Erro ao cadastrar disciplina!');
+        }
     }
 
     return (

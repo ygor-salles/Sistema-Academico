@@ -1,7 +1,5 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3333';
+const api = axios.create({ baseURL: 'http://localhost:3333' });
 
-export function fetchDisciplines() {
-    return axios(`${API_URL}/disciplines`)
-}
+export default api;

@@ -16,7 +16,7 @@ function App() {
   );
   const classes = useStyles();
 
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: light)');
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   // paletas de cores legais: #7b1fa2 #444e83 #3f51b5 #212121: https://material-ui.com/pt/customization/palette/
 
   const theme = React.useMemo(
