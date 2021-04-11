@@ -2,7 +2,7 @@ import { Button, Paper, Table, TableBody, TableCell,
     TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import { Discipline } from '../../models/discipline.model';
-import api from '../../services/discipline.service';
+import api from '../../services/api';
 import { columns, useStyles, initForm, FormDiscipline } from './DisciplineUtils';
 import DialogDiscipline  from './DialogDiscipline';
 
@@ -87,9 +87,7 @@ function DisciplineComponent() {
             <Button variant="contained" color="primary" onClick={handleClickOpen} className={classes.butonContainer}>
                 Cadastrar
             </Button>
-            <React.StrictMode>
-                <DialogDiscipline selectedValue={selectedValue} open={open} onClose={handleClose} />
-            </React.StrictMode>
+            <DialogDiscipline selectedValue={selectedValue} open={open} onClose={handleClose} />
         </>
     );
 }

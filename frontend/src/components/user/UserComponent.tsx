@@ -9,27 +9,24 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import React, { useEffect, useState } from 'react';
 import { User } from '../../models/user.model';
-import { fetchUsers } from '../../services/user.service';
+import api from '../../services/api';
 import { columns, useStyles } from './UserUtils'
 
 function UserComponent() {
+    const classes = useStyles();
+    
     const [users, setUsers] = useState<User[]>([]);
-
     useEffect(() => {
-        fetchUsers()
+        api.get('users')
             .then(response => setUsers(response.data))
             .catch(error => console.log(error))
     }, []);
 
-
-    const classes = useStyles();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
     };
-
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(+event.target.value);
         setPage(0);

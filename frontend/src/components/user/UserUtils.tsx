@@ -10,7 +10,7 @@ interface Column {
 
 const columns: Column[] = [
     { id: 'name', label: 'Nome', minWidth: 170 },
-    { id: 'email', label: 'E-mail', minWidth: 170 },
+    { id: 'email', label: 'E-mail', minWidth: 120 },
     { id: 'admin', label: 'Administrador', minWidth: 100 },
     { id: 'created_at', label: 'Data de Criação', minWidth: 150 },
 ];

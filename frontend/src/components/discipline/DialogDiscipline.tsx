@@ -1,6 +1,6 @@
 import { Button, TextField, DialogTitle, DialogContent, DialogActions, Dialog } from '@material-ui/core';
 import React from 'react';
-import api from '../../services/discipline.service';
+import api from '../../services/api';
 import { FormDiscipline, useStyles } from './DisciplineUtils';
 
 type Props = {
@@ -9,7 +9,8 @@ type Props = {
     onClose: (obj: FormDiscipline) => void
 }
 
-function DialogDiscipline({ selectedValue, open, onClose }: Props) {
+function DialogDiscipline(props: Props) {
+    const { selectedValue, open, onClose } = props;
 
     const classes = useStyles();
 
