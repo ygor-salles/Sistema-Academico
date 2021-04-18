@@ -10,7 +10,9 @@ import TableRow from '@material-ui/core/TableRow';
 import React, { useEffect, useState } from 'react';
 import { User } from '../../models/user.model';
 import api from '../../services/api';
-import { columns, useStyles } from './UserUtils'
+import { useStyles } from './UserUtils';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 function UserComponent() {
     const classes = useStyles();
@@ -39,29 +41,24 @@ function UserComponent() {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
-                                {columns.map((column) => (
-                                    <TableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
+                                <TableCell>Nome</TableCell>
+                                <TableCell>E-mail</TableCell>
+                                <TableCell>Administrador</TableCell>
+                                <TableCell>Data de Criação</TableCell>
+                                <TableCell>Atualizar</TableCell>
+                                <TableCell>Deletar</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.email}>
-                                        {columns.map((column) => {
-                                            const value = row[column.id];
-                                            return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    {column.format && typeof value === 'number' ? column.format(value) : value}
-                                                </TableCell>
-                                            );
-                                        })}
+                                        <TableCell>{row.name}</TableCell>
+                                        <TableCell>{row.email}</TableCell>
+                                        <TableCell>{row.admin === true ? 'admin' : 'user'}</TableCell>
+                                        <TableCell>{row.created_at}</TableCell>
+                                        <TableCell align="center"> <EditIcon htmlColor="#d9cd26" /> </TableCell>
+                                        <TableCell align="center"> <DeleteIcon htmlColor="#e35e6b" /> </TableCell>
                                     </TableRow>
                                 );
                             })}

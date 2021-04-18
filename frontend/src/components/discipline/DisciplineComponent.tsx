@@ -3,8 +3,10 @@ import { Button, Paper, Table, TableBody, TableCell,
 import React, { useEffect, useState } from 'react';
 import { Discipline } from '../../models/discipline.model';
 import api from '../../services/api';
-import { columns, useStyles, initForm, FormDiscipline } from './DisciplineUtils';
+import { useStyles, initForm, FormDiscipline } from './DisciplineUtils';
 import DialogDiscipline  from './DialogDiscipline';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 function DisciplineComponent() {
     // Componente de estilização
@@ -49,25 +51,24 @@ function DisciplineComponent() {
                     <Table stickyHeader aria-label="sticky table">
                         <TableHead>
                             <TableRow>
-                                {columns.map((column) => (
-                                    <TableCell key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                                        {column.label}
-                                    </TableCell>
-                                ))}
+                                <TableCell>Código</TableCell>
+                                <TableCell>Nome</TableCell>
+                                <TableCell>Carga Horária</TableCell>
+                                <TableCell>Data de Criação</TableCell>
+                                <TableCell>Editar</TableCell>
+                                <TableCell>Deletar</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {disciplines.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                        {columns.map((column) => {
-                                            const value = row[column.id];
-                                            return (
-                                                <TableCell key={column.id} align={column.align}>
-                                                    {column.format && typeof value === 'number' ? column.format(value) : value}
-                                                </TableCell>
-                                            );
-                                        })}
+                                        <TableCell>{row.code}</TableCell>
+                                        <TableCell>{row.name}</TableCell>
+                                        <TableCell>{row.workload}</TableCell>
+                                        <TableCell>{row.created_at}</TableCell>
+                                        <TableCell align="center"> <EditIcon htmlColor="#d9cd26" /> </TableCell>
+                                        <TableCell align="center"> <DeleteIcon htmlColor="#e35e6b" /> </TableCell>
                                     </TableRow>
                                 );
                             })}

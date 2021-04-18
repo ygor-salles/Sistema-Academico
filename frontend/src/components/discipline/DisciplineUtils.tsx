@@ -1,20 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-interface Column {
-    id: 'code' | 'name' | 'workload' | 'created_at';
-    label: string;
-    minWidth?: number;
-    align?: 'right';
-    format?: (value: number) => string;
-}
-
-const columns: Column[] = [
-    { id: 'code', label: 'Código', minWidth: 150 },
-    { id: 'name', label: 'Nome', minWidth: 170 },
-    { id: 'workload', label: 'Carga Horária', minWidth: 100 },
-    { id: 'created_at', label: 'Data de Criação', minWidth: 150 },
-];
-
 const useStyles = makeStyles({
     root: {
         width: '100%',
@@ -33,4 +18,4 @@ const useStyles = makeStyles({
 export type FormDiscipline = { code: string, name: string, workload: number };
 const initForm: FormDiscipline = { code: '', name: '', workload: 0 };
 
-export { columns, useStyles, initForm };
+export { useStyles, initForm };

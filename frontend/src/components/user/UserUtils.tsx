@@ -1,20 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-interface Column {
-    id: 'name' | 'email' | 'admin' | 'created_at';
-    label: string;
-    minWidth?: number;
-    align?: 'right';
-    format?: (value: number) => string;
-}
-
-const columns: Column[] = [
-    { id: 'name', label: 'Nome', minWidth: 170 },
-    { id: 'email', label: 'E-mail', minWidth: 120 },
-    { id: 'admin', label: 'Administrador', minWidth: 100 },
-    { id: 'created_at', label: 'Data de Criação', minWidth: 150 },
-];
-
 const useStyles = makeStyles({
     root: {
         width: '100%',
@@ -27,4 +12,4 @@ const useStyles = makeStyles({
     }
 });
 
-export { columns, useStyles };
+export { useStyles };
