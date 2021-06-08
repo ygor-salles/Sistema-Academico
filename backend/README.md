@@ -33,3 +33,5 @@ yarn typeorm migration:run
 ```bash
 yarn typeorm migration:revert
 ```
+
+![Image](https://github.com/ygor-salles/MVC-BD-Academico/blob/master/02_MVC-BD-SQL-Academico/assets/MODELAGEM.png "Modelagem do sistema")
